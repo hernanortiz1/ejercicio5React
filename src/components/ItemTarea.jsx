@@ -1,4 +1,5 @@
 import { ListGroup, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const ItemTarea = () => {
   return (
