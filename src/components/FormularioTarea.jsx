@@ -42,7 +42,7 @@ const FormularioTarea = () => {
 
   return (
      <section>
-      <Form onSubmit={handleSubmit(agregarTareas)} className="mb-3">
+      <Form onSubmit={handleSubmit(agregarTareas)} className="mb-3 shadow p-3 border border-3 border-primary-subtle rounded-3">
         <Form.Group className="mb-2 d-flex">
           <Form.Control
             type="text"
