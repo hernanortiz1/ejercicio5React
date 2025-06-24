@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+  background: linear-gradient(to right, #a1c4fda7, #c2e9fb);
 }
 main {
   flex-grow: 1;
