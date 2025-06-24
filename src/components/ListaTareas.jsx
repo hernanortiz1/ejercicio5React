@@ -4,9 +4,13 @@ import ItemTarea from "./ItemTarea"
 const ListaTareas = () => {
   return (
     <>
-      <ListGroup> 
-          <ItemTarea/>
-      </ListGroup>
+      <ListGroup>
+      {
+        tareaProps.map((item, indice) => (
+          <ItemTarea key={indice}  nombreTarea={item} borrarTareaProps={borrarTareaProps} posicion={indice}/>
+        ))
+      }
+    </ListGroup>
     </>
   );
 };
