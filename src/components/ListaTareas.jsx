@@ -1,7 +1,7 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import ItemTarea from "./ItemTarea"
 
-const ListaTareas = () => {
+const ListaTareas = ({ tareaProps, borrarTareaProps}) => {
   return (
     <>
       <ListGroup>
