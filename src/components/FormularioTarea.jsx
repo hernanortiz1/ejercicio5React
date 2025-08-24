@@ -51,7 +51,7 @@ const FormularioTarea = () => {
             <Button type="submit" variant="primary" className="mb-1 mx-md-2">
             Guardar
           </Button>
-          <Button type="submit" variant="success" className="">
+          <Button type="submit" variant="success">
             Buscar
           </Button>
           </div>
