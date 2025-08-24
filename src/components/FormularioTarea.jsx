@@ -2,13 +2,15 @@ import { Form, Button } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { leerTareas} from "../../helpers/queries";
 
 const FormularioTarea = () => {
-  const [tarea, setTarea] = useState("");
+  // const [tarea, setTarea] = useState("");
+const [listaTareas, setListaTareas] = useState([])
 
-  const tareasLocalStorage =
-    JSON.parse(localStorage.getItem("listaTareas")) || [];
-  const [tareas, setTareas] = useState(tareasLocalStorage);
+  // const tareasLocalStorage =
+  //   JSON.parse(localStorage.getItem("listaTareas")) || [];
+  // const [tareas, setTareas] = useState(tareasLocalStorage);
 
   const {
     register,
@@ -18,10 +20,19 @@ const FormularioTarea = () => {
   } = useForm();
 
   useEffect(() => {
-    console.log("desde use effect");
+  obetenerTareas()
+    // localStorage.setItem("listaTareas", JSON.stringify(tareas));
+  }, []);
 
-    localStorage.setItem("listaTareas", JSON.stringify(tareas));
-  }, [tareas]);
+const obetenerTareas = async ()=>{
+  const respuesta = await leerTareas()
+  if(respuesta.status === 200){
+    const datos = await respuesta.json()
+    setListaTareas(datos)
+  }else{
+    console.info("Error al buscar un tarea")
+  }
+}
 
   const agregarTareas = (datos) => {
     setTareas([...tareas, datos.inputTarea]);
