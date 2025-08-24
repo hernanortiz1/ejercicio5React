@@ -2,13 +2,10 @@ import { Form, Button } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { leerTareas } from "../helpers/queries.js";
 
 const FormularioTarea = () => {
-  const [tarea, setTarea] = useState("");
-
-  const tareasLocalStorage =
-    JSON.parse(localStorage.getItem("listaTareas")) || [];
-  const [tareas, setTareas] = useState(tareasLocalStorage);
+  const [listaTareas, setListaTareas] = useState([]);
 
   const {
     register,
@@ -17,37 +14,27 @@ const FormularioTarea = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    console.log("desde use effect");
-
-    localStorage.setItem("listaTareas", JSON.stringify(tareas));
-  }, [tareas]);
-
-  const agregarTareas = (datos) => {
-    setTareas([...tareas, datos.inputTarea]);
-
-    reset();
-  };
-
-  const borrarTarea = (nombreTarea) => {
-    const indice = tareas.findIndex((item) => item === nombreTarea);
-
-    if (indice !== -1) {
-      const nuevasTareas = [...tareas];
-
-      nuevasTareas.splice(indice, 1);
-      setTareas(nuevasTareas);
+  const obetenerTareas = async () => {
+    const respuesta = await leerTareas();
+    if (respuesta.status === 200) {
+      const datos = await respuesta.json();
+      setListaTareas(datos);
+    } else {
+      console.info("Error al buscar un tarea");
     }
   };
 
+  useEffect(() => {
+    obetenerTareas();
+  }, []);
+
   return (
-     <section>
-      <Form onSubmit={handleSubmit(agregarTareas)} className="mb-3 shadow p-3 border border-3 border-primary-subtle rounded-3">
+    <section>
+      <Form className="mb-3 shadow p-3 border border-3 border-primary-subtle rounded-3">
         <Form.Group className="mb-2 d-flex">
           <Form.Control
             type="text"
             placeholder="Ingresa una tarea"
-            onChange={(e) => setTarea(e.target.value)}
             {...register("inputTarea", {
               required: "La tarea es un dato obligatorio",
               minLength: {
@@ -68,7 +55,7 @@ const FormularioTarea = () => {
           {errors.inputTarea?.message}
         </Form.Text>
       </Form>
-      <ListaTareas tareaProps={tareas} borrarTareaProps={borrarTarea} />
+      <ListaTareas tareaProps={listaTareas} />
     </section>
   );
 };
