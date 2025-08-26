@@ -42,6 +42,17 @@ const FormularioTarea = () => {
   const handleCloseBusqueda = () => setVentanaBusqueda(false);
 
   const buscarTareas = () => {
+    if (busqueda.trim().length < 3) {
+      Swal.fire({
+        title: "Ingrese más caracteres",
+        text: "Debe ingresar al menos 3 caracteres para buscar",
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
     const filtradas = listaTareas.filter((ingresoTarea) =>
       ingresoTarea.inputTarea.toLowerCase().includes(busqueda.toLowerCase())
     );
@@ -52,7 +63,7 @@ const FormularioTarea = () => {
     try {
       const respuesta = await crearTarea(tarea);
 
-      if (respuesta.status === 201 ) {
+      if (respuesta.status === 201) {
         Swal.fire({
           title: "Tarea creada",
           text: `La tarea "${tarea.inputTarea}" fue creada correctamente`,

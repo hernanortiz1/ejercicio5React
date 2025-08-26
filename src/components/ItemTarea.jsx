@@ -41,7 +41,7 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
           //actualizar tabla
           obtenerTareas();
         }
-      } 
+      }
     });
   };
 
@@ -59,6 +59,17 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
   };
 
   const guardarCambios = () => {
+    if (tareaEditada.trim().length < 3) {
+      Swal.fire({
+        title: "Error",
+        text: "La tarea debe tener al menos 3 caracteres",
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
     editarProductos();
     handleClose();
   };
