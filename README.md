@@ -1,26 +1,39 @@
-# 📝 Aplicación de Lista de Tareas con React y almacenamiento en Localstorage
+# 📝 Aplicación de Lista de Tareas con React, Express y MongoDB  
 
-Esta es una pequeña aplicación desarrollada con **React**, **React-Bootstrap** y **SweetAlert2**, que permite crear y eliminar tareas dinámicamente con una interfaz moderna.
+Esta es una aplicación **Full Stack** que permite gestionar una lista de tareas, desarrollada con **React** en el frontend y **Node.js + Express + MongoDB** en el backend.  
+
+La app permite **crear, listar, editar y eliminar tareas**, con persistencia en base de datos.  
 
 ---
 
 ## **📌 Tecnologías Usadas**  
-| **Tecnología**       | **Uso**                              |  
-|----------------------|--------------------------------------|  
-| ⚛ React             | Biblioteca principal para la UI.     |  
-| 🎨 React-Bootstrap  | Diseño responsive y componentes.     |  
-| 📝 SweetAlert       | Ventana de confirmación de borrado . |  
-| 🚀 Vite             | Entorno de desarrollo rápido.        |  
+| **Tecnología**       | **Uso**                                    |  
+|----------------------|--------------------------------------------|  
+| ⚛ React             | Frontend para la UI.                      |  
+| 🎨 React-Bootstrap  | Diseño responsive y componentes.           |  
+| 📝 SweetAlert2      | Ventanas de confirmación y alertas.        |  
+| 🚀 Vite             | Entorno de desarrollo del frontend.        |  
+| 🖥 Node.js + Express| Servidor backend con API REST.             |  
+| 🍃 MongoDB + Mongoose | Base de datos NoSQL para persistencia.    |  
 
 ---
+## **📋 Funcionalidades Principales**  
 
+### **Frontend (React)**  
+- 📥 Agregar nuevas tareas.  
+- 📋 Listar todas las tareas.  
+- ✏️ Editar tareas existentes.  
+- 🗑 Eliminar tareas con confirmación.  
+- 🎨 Interfaz moderna y responsive con React-Bootstrap.  
+
+---
 
 ## **🛠 Instalación y Ejecución**  
 
 1. **Clona el repositorio**  
    ```bash
    git clone https://github.com/hernanortiz1/ejercicio5React.git
-   cd lista-tareas-react
+ 
    ```
 
 2. **Instala las dependencias**  
@@ -32,7 +45,6 @@ Esta es una pequeña aplicación desarrollada con **React**, **React-Bootstrap**
    ```bash
    npm run dev
    ```
-   Abre tu navegador en: [http://localhost:5173](http://localhost:5173)  
 
 ---
 ## **📋 Funcionalidades Principales** 
@@ -55,9 +67,11 @@ Esta es una pequeña aplicación desarrollada con **React**, **React-Bootstrap**
 ```
 src/  
 ├── components/  
-│   ├── FormularioTare.jsx        
+│   ├── FormularioTarea.jsx        
 │   ├── ListaTareas.jsx       
-│   └── ItemTarea.jsx      
+│   └── ItemTarea.jsx    
+├── helpers/ 
+│    ├── queries.js     
 ├── App.jsx               # Componente principal  
 └── main.jsx              # Punto de entrada  
 ```
