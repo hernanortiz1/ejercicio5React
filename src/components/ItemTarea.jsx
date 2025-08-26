@@ -9,19 +9,18 @@ import {
 
 const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
   const [show, setShow] = useState(false);
-  const { inputTarea, _id } = tarea;
-  const [tareaEditada, setTareaEditada] = useState(inputTarea);
+  const [tareaEditada, setTareaEditada] = useState(tarea.inputTarea);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    setTareaEditada(inputTarea);
+    setTareaEditada(tarea.inputTarea);
     setShow(true);
   };
 
   const confirmarBorrado = () => {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: `La tarea ${inputTarea} se eliminará`,
+      text: `La tarea ${tarea.inputTarea} se eliminará`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -30,11 +29,11 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
       cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const respuesta = await borrarTareaPorID(_id);
+        const respuesta = await borrarTareaPorID(tarea._id);
         if (respuesta.status === 200) {
           Swal.fire({
             title: "Eliminada",
-            text: `La tarea  ${inputTarea} fue borrada correctamente`,
+            text: `La tarea  ${tarea.inputTarea} fue borrada correctamente`,
             icon: "success",
             timer: 1200,
             showConfirmButton: false,
@@ -42,28 +41,22 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
           //actualizar tabla
           obtenerTareas();
         }
-      } else {
-        Swal.fire({
-          title: "ocurrio un error",
-          text: `La tarea ${inputTarea} NO fue eliminada`,
-          icon: "success",
-        });
-      }
+      } 
     });
   };
 
- const editarProductos = async () => {
-  const tareaParaEditar = { inputTarea: tareaEditada }; 
-  const respuesta = await editarTarea(tareaParaEditar, _id);
-  if (respuesta.status === 200) {
-    Swal.fire({
-      title: "Tarea editada",
-      text: `La tarea "${tareaEditada}" fue editada correctamente`,
-      icon: "success",
-    });
-    obtenerTareas(); 
-  }
-};
+  const editarProductos = async () => {
+    const tareaParaEditar = { inputTarea: tareaEditada };
+    const respuesta = await editarTarea(tareaParaEditar, tarea._id);
+    if (respuesta.status === 200) {
+      Swal.fire({
+        title: "Tarea editada",
+        text: `La tarea "${tareaEditada}" fue editada correctamente`,
+        icon: "success",
+      });
+      obtenerTareas();
+    }
+  };
 
   const guardarCambios = () => {
     editarProductos();
@@ -73,7 +66,7 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
   return (
     <>
       <ListGroup.Item className="d-flex justify-content-between">
-        {posicion + 1}- {inputTarea}{" "}
+        {posicion + 1}- {tarea.inputTarea}{" "}
         <div className="d-flex flex-column flex-md-row text-end">
           <Button
             variant="danger"
@@ -96,7 +89,7 @@ const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Modificar tarea: {inputTarea}</Form.Label>
+              <Form.Label>Modificar tarea: {tarea.inputTarea}</Form.Label>
               <Form.Control
                 type="text"
                 value={tareaEditada}

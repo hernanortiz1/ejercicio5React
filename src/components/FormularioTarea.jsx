@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
 
-  const [showBusqueda, setShowBusqueda] = useState(false);
+  const [ventanaBusqueda, setVentanaBusqueda] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
 
@@ -34,26 +34,25 @@ const FormularioTarea = () => {
   }, []);
 
   const handleShowBusqueda = () => {
-    setBusqueda(""); // limpiar input al abrir
+    setBusqueda("");
     setResultadosBusqueda([]);
-    setShowBusqueda(true);
+    setVentanaBusqueda(true);
   };
 
-  const handleCloseBusqueda = () => setShowBusqueda(false);
+  const handleCloseBusqueda = () => setVentanaBusqueda(false);
 
   const buscarTareas = () => {
-    const filtradas = listaTareas.filter((t) =>
-      t.inputTarea.toLowerCase().includes(busqueda.toLowerCase())
+    const filtradas = listaTareas.filter((ingresoTarea) =>
+      ingresoTarea.inputTarea.toLowerCase().includes(busqueda.toLowerCase())
     );
     setResultadosBusqueda(filtradas);
   };
 
   const onSubmit = async (tarea) => {
-    console.log("Tarea a enviar:", tarea);
     try {
       const respuesta = await crearTarea(tarea);
 
-      if (respuesta && (respuesta.status === 201 || respuesta.status === 200)) {
+      if (respuesta.status === 201 ) {
         Swal.fire({
           title: "Tarea creada",
           text: `La tarea "${tarea.inputTarea}" fue creada correctamente`,
@@ -114,23 +113,23 @@ const FormularioTarea = () => {
       </Form>
       <ListaTareas tareaProps={listaTareas} obtenerTareas={obtenerTareas} />
 
-      <Modal show={showBusqueda} onHide={handleCloseBusqueda}>
+      <Modal show={ventanaBusqueda} onHide={handleCloseBusqueda}>
         <Modal.Header closeButton>
           <Modal.Title>Buscar Tarea</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Control
             type="text"
-            placeholder="Ingrese palabra clave..."
+            placeholder="Ingrese tarea a buscar"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             autoFocus
           />
           <ListGroup className="mt-3">
             {resultadosBusqueda.length > 0 ? (
-              resultadosBusqueda.map((t, idx) => (
-                <ListGroup.Item key={t._id}>
-                  {idx + 1} - {t.inputTarea}
+              resultadosBusqueda.map((term, fila) => (
+                <ListGroup.Item key={term._id}>
+                  {fila + 1} - {term.inputTarea}
                 </ListGroup.Item>
               ))
             ) : (
