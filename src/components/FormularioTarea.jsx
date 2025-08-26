@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal, ListGroup } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,10 @@ import Swal from "sweetalert2";
 
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
+
+  const [showBusqueda, setShowBusqueda] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
 
   const {
     register,
@@ -29,12 +33,25 @@ const FormularioTarea = () => {
     obtenerTareas();
   }, []);
 
+  const handleShowBusqueda = () => {
+    setBusqueda(""); // limpiar input al abrir
+    setResultadosBusqueda([]);
+    setShowBusqueda(true);
+  };
+
+  const handleCloseBusqueda = () => setShowBusqueda(false);
+
+  const buscarTareas = () => {
+    const filtradas = listaTareas.filter((t) =>
+      t.inputTarea.toLowerCase().includes(busqueda.toLowerCase())
+    );
+    setResultadosBusqueda(filtradas);
+  };
 
   const onSubmit = async (tarea) => {
     console.log("Tarea a enviar:", tarea);
     try {
       const respuesta = await crearTarea(tarea);
-     
 
       if (respuesta && (respuesta.status === 201 || respuesta.status === 200)) {
         Swal.fire({
@@ -43,7 +60,7 @@ const FormularioTarea = () => {
           icon: "success",
         });
         reset();
-        obtenerTareas(); 
+        obtenerTareas();
       } else {
         Swal.fire({
           title: "Error",
@@ -60,7 +77,7 @@ const FormularioTarea = () => {
     <section>
       <Form
         className="mb-3 shadow p-3 border border-3 border-primary-subtle rounded-3"
-        onSubmit={handleSubmit(onSubmit)} 
+        onSubmit={handleSubmit(onSubmit)}
       >
         <Form.Group className="mb-2 d-flex">
           <Form.Control
@@ -82,7 +99,11 @@ const FormularioTarea = () => {
             <Button type="submit" variant="primary" className="mb-1 mx-md-2">
               Guardar
             </Button>
-            <Button type="button" variant="success" onClick={obtenerTareas}>
+            <Button
+              type="button"
+              variant="success"
+              onClick={handleShowBusqueda}
+            >
               Buscar
             </Button>
           </div>
@@ -92,6 +113,40 @@ const FormularioTarea = () => {
         </Form.Text>
       </Form>
       <ListaTareas tareaProps={listaTareas} obtenerTareas={obtenerTareas} />
+
+      <Modal show={showBusqueda} onHide={handleCloseBusqueda}>
+        <Modal.Header closeButton>
+          <Modal.Title>Buscar Tarea</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Control
+            type="text"
+            placeholder="Ingrese palabra clave..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            autoFocus
+          />
+          <ListGroup className="mt-3">
+            {resultadosBusqueda.length > 0 ? (
+              resultadosBusqueda.map((t, idx) => (
+                <ListGroup.Item key={t._id}>
+                  {idx + 1} - {t.inputTarea}
+                </ListGroup.Item>
+              ))
+            ) : (
+              <div className="text-muted mt-2">No se encontraron tareas</div>
+            )}
+          </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseBusqueda}>
+            Cerrar
+          </Button>
+          <Button variant="primary" onClick={buscarTareas}>
+            Buscar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 };
