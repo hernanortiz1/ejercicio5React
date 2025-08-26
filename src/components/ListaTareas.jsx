@@ -7,7 +7,7 @@ const ListaTareas = ({ tareaProps}) => {
       <ListGroup>
       {
         tareaProps.map((item, indice) => (
-          <ItemTarea key={item._id}  nombreTarea={item.inputTarea} posicion={indice}/>
+          <ItemTarea key={item._id}  nombreTarea={item.inputTarea} posicion={indice} />
         ))
       }
     </ListGroup>
