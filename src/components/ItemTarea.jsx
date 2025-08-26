@@ -10,11 +10,11 @@ import {
 const ItemTarea = ({ tarea, posicion, obtenerTareas }) => {
   const [show, setShow] = useState(false);
   const { inputTarea, _id } = tarea;
-const [tareaEditada, setTareaEditada] = useState(inputTarea);
+  const [tareaEditada, setTareaEditada] = useState(inputTarea);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
-   setTareaEditada(inputTarea);
+    setTareaEditada(inputTarea);
     setShow(true);
   };
 
@@ -52,16 +52,18 @@ const [tareaEditada, setTareaEditada] = useState(inputTarea);
     });
   };
 
-  const editarProductos = async () => {
-    const respuesta = await editarTarea(inputTarea, _id);
-    if (respuesta.status === 200) {
-      Swal.fire({
-        title: "Tarea editada",
-        text: `La tarea ${inputTarea} fue editada correctamente`,
-        icon: "success",
-      });
-    }
-  };
+ const editarProductos = async () => {
+  const tareaParaEditar = { inputTarea: tareaEditada }; 
+  const respuesta = await editarTarea(tareaParaEditar, _id);
+  if (respuesta.status === 200) {
+    Swal.fire({
+      title: "Tarea editada",
+      text: `La tarea "${tareaEditada}" fue editada correctamente`,
+      icon: "success",
+    });
+    obtenerTareas(); 
+  }
+};
 
   const guardarCambios = () => {
     editarProductos();
@@ -95,7 +97,12 @@ const [tareaEditada, setTareaEditada] = useState(inputTarea);
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Modificar tarea: {inputTarea}</Form.Label>
-              <Form.Control type="text" autoFocus />
+              <Form.Control
+                type="text"
+                value={tareaEditada}
+                onChange={(e) => setTareaEditada(e.target.value)}
+                autoFocus
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
