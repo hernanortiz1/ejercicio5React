@@ -15,7 +15,7 @@ const FormularioTarea = () => {
     formState: { errors },
   } = useForm();
 
-  const obetenerTareas = async () => {
+  const obtenerTareas = async () => {
     const respuesta = await leerTareas();
     if (respuesta.status === 200) {
       const datos = await respuesta.json();
@@ -26,7 +26,7 @@ const FormularioTarea = () => {
   };
 
   useEffect(() => {
-    obetenerTareas();
+    obtenerTareas();
   }, []);
 
 
@@ -43,7 +43,7 @@ const FormularioTarea = () => {
           icon: "success",
         });
         reset();
-        obetenerTareas(); 
+        obtenerTareas(); 
       } else {
         Swal.fire({
           title: "Error",
@@ -82,7 +82,7 @@ const FormularioTarea = () => {
             <Button type="submit" variant="primary" className="mb-1 mx-md-2">
               Guardar
             </Button>
-            <Button type="button" variant="success" onClick={obetenerTareas}>
+            <Button type="button" variant="success" onClick={obtenerTareas}>
               Buscar
             </Button>
           </div>
@@ -91,7 +91,7 @@ const FormularioTarea = () => {
           {errors.inputTarea?.message}
         </Form.Text>
       </Form>
-      <ListaTareas tareaProps={listaTareas} />
+      <ListaTareas tareaProps={listaTareas} obtenerTareas={obtenerTareas} />
     </section>
   );
 };
